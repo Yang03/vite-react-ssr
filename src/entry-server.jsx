@@ -11,7 +11,7 @@ import createSagaMiddleware, { END } from 'redux-saga'
 // import { routerMiddleware } from 'react-router-redux'
 
 
-import playlistReducer from './shared/pages/playlist/reducer'
+import rootReducer from './shared/reducer'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -32,9 +32,7 @@ export function render(url, store, context) {
 
 export function configureStore(initialState) {
   const store = createStore(
-      combineReducers({
-          playlist: playlistReducer,
-      }),
+      rootReducer,
       initialState,
       compose(applyMiddleware(...reduxMiddlewares)),
   );

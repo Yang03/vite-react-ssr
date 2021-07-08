@@ -7,27 +7,28 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 // import { createMemoryHistory } from 'history'
 import createSagaMiddleware, { END } from 'redux-saga'
 
+import rootReducer from './shared/reducer'
 
-import playlistReducer from './shared/pages/playlist/reducer'
 import sagas from './shared/saga'
 
 const preloadedState = window.__PRELOADED_STATE__
 
-const reducer = combineReducers({
-  playlist: playlistReducer,
-})
+// const reducer = combineReducers({
+//   playlist: playlistReducer,
+//   recommend: recommendReducer,
+// })
 
 // const history = createMemoryHistory();
 const sagaMiddleware = createSagaMiddleware()
 // Allow the passed state to be garbage-collected
-delete window.__PRELOADED_STATE__;
+// delete window.__PRELOADED_STATE__;
 
 const store = createStore(
-  reducer,
+  rootReducer,
   preloadedState,
   compose(
       applyMiddleware(sagaMiddleware),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   ),
 );
 

@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
-const { playlist }  = require('./src/server/api')
-const {matchRoutes} = require('react-router-config')
+const { playlist }  = require('./src/api')
+const { matchRoutes } = require('react-router-config')
 
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
@@ -18,8 +18,6 @@ async function createServer(
     : ''
 
   const app = express()
-
-  app.get('/api/playlist/hot', playlist.hot)
 
   /**
    * @type {import('vite').ViteDevServer}
@@ -50,9 +48,12 @@ async function createServer(
     )
   }
 
+  app.get('/api/playlist/hot', playlist.hot)
+  app.get('/api/playlist/recommend', playlist.recommend)
   
 
   app.use('*', async (req, res) => {
+
     try {
       const url = req.originalUrl
      
@@ -70,12 +71,20 @@ async function createServer(
         render = require('./dist/server/entry-server.js').render
       }
 
+      const context = {}
+
+      // console.log(context.url, '++++++++++')
+      // if (context.url) {
+      //   // Somewhere a `<Redirect>` was rendered
+      //   return res.redirect(301, context.url)
+      // }
+
       const sagas = (await vite.ssrLoadModule(('/src/shared/saga'))).default
     
       configureStore = (await vite.ssrLoadModule('/src/entry-server.jsx')).configureStore
 
       const store = configureStore()
-      const context = {}
+      // const context = {}
       await store.runSaga(sagas)
       store.runSaga(sagas).toPromise().then(() => {
         const preloadedState = store.getState();
@@ -87,6 +96,7 @@ async function createServer(
       })
 
       branch.forEach(({ route }) => {
+        console.log(route)
         route.component.loadData && route.component.loadData(store)
       });
       store.close()
@@ -102,10 +112,15 @@ async function createServer(
 }
 
 if (!isTest) {
-  createServer().then(({ app }) =>
+  createServer().then(({ app }) => {
+    
+
     app.listen(8000, () => {
       console.log('http://localhost:8000')
     })
+  }
+    
+   
   )
 }
 
