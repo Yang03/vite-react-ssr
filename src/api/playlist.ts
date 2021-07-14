@@ -1,7 +1,9 @@
-const { login_cellphone, user_cloud, user_record, recommend_songs, user_account} = require('NeteaseCloudMusicApi')
+"use strict";
 
+import { login_cellphone, user_cloud, user_record, recommend_songs, user_account} from 'NeteaseCloudMusicApi'
+import { Request, Response } from "express"
 
-const hot = async (req, res) => {
+export const hot = async (req: Request, res: Response) => {
   // try {
   //   const result = await login_cellphone({
   //     phone: '18616813528',
@@ -22,7 +24,7 @@ const hot = async (req, res) => {
   return res.json(reulst)
 }
 
-const recommend = async(req, res) => {
+export const recommend = async(req: Request, res: Response) => {
   
   const reulst  = await user_record({
    uid: '369629365'
@@ -30,8 +32,4 @@ const recommend = async(req, res) => {
   return res.json(reulst)
 }
 
-module.exports = {
-  hot,
-  recommend
-}
 

@@ -12,9 +12,9 @@ const TabIcon = Icon.createFromIconfont('//at.alicdn.com/t/font_1340918_lpsswvb7
 function App() {
   const history = useHistory()
   const location = useLocation()
-  const [current, setCurrent] = useState(location.pathname || '/playlist')
+  const [current, setCurrent] = useState<string | number | undefined>(location.pathname || '/playlist')
 
-  const change = (itemKey) => {
+  const change = (itemKey?: string | number) => {
     history.push(`${itemKey}`)
     setCurrent(itemKey)
   }

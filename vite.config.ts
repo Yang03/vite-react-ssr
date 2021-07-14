@@ -7,8 +7,13 @@ import vitePluginImp from 'vite-plugin-imp';
 // import 'zarm/lib/style/index.css'; import 'normalize.css
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    fs: {
+      strict: true,
+    }
+  },
   esbuild: {
-    jsxInject: `import React from 'react'; `
+    jsxInject: `import React from 'react';`
   },
   css: {
     preprocessorOptions: {

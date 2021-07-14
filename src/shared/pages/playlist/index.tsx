@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { Store } from 'redux';
 import { Cell } from 'zarm'
 
 const PlayList = () => {
 
   const dispatch = useDispatch()
-  const playlist = useSelector((state) => state.playlist)
+  const playlist = useSelector((state: any) => state?.playlist)
 
   React.useEffect(() => {
-    console.log('fetch_playlist')
     dispatch({
       type: 'fetch_playlist'
     })
@@ -15,12 +15,12 @@ const PlayList = () => {
 
   return (<div>
     {
-      playlist?.map((item) => <Cell key={item.id} title={item.name} icon={<img src={item.al.picUrl}  width="48px"/>}>{item.reason}</Cell>)
+      playlist?.map((item: any) => <Cell key={item.id} title={item.name} icon={<img src={item.al.picUrl}  width="48px"/>}>{item.reason}</Cell>)
     }
   </div>)
 }
 
-PlayList.loadData = (store) => {
+PlayList.loadData = (store: Store, params?: any) => {
   store.dispatch({
     type: 'fetch_playlist'
   })

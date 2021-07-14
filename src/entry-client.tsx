@@ -11,6 +11,7 @@ import rootReducer from './shared/reducer'
 
 import sagas from './shared/saga'
 
+// @ts-ignore
 const preloadedState = window.__PRELOADED_STATE__
 
 // const reducer = combineReducers({
@@ -32,14 +33,24 @@ const store = createStore(
   ),
 );
 
+
+window.store = store
+
 // then run the saga
 sagaMiddleware.run(sagas)
 
+const Root = () => {
+  return (
+    <Provider store={store}>
+       { /* @ts-ignore */ }
+      <BrowserRouter>
+       <App />
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
 ReactDOM.render(
-  // <React.StrictMode>
-     <Provider store={store}>
-       <BrowserRouter> <App /></BrowserRouter>
-       </Provider>,
-  // </React.StrictMode>,
+  <Root />,
   document.getElementById('app')
 )
