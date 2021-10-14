@@ -56,12 +56,6 @@ async function createServer(
 
     try {
       const url = req.originalUrl
-     
-      // const routes = (await vite.ssrLoadModule('/src/shared/routes')).default
-
-      // console.log(req.path)
-      // const branch = matchRoutes(routes, req.path);
-
       let template: string;
       let render: Function;
       if (!isProd) {
@@ -75,13 +69,14 @@ async function createServer(
       }
 
       const context = {}
-
-      // // console.log(context.url, '++++++++++')
       // if (context.url) {
       //   // Somewhere a `<Redirect>` was rendered
       //   return res.redirect(301, context.url)
       // }
 
+      if (req.query.csr !== undefined) {
+        return res.status(200).set({ 'Content-Type': 'text/html' }).end(template)
+      }
       const sagas = (await vite.ssrLoadModule(('/src/shared/saga'))).default
     
       const configureStore = (await vite.ssrLoadModule('/src/entry-server.tsx')).configureStore
@@ -98,11 +93,6 @@ async function createServer(
       }, () => {
         // todo
       })
-
-      // branch.forEach(({ route }) => {
-      //   const { loadData } = route?.component as any;
-      //   loadData && loadData(store)
-      // });
       store.close()
     } catch (e) {
       !isProd && vite.ssrFixStacktrace(e)

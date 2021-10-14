@@ -7,12 +7,13 @@ import { useHistory, useLocation } from 'react-router'
 import { Icon, TabBar } from 'zarm'
 import { useState } from "react";
 
-const TabIcon = Icon.createFromIconfont('//at.alicdn.com/t/font_1340918_lpsswvb7yv.js');
+const TabIcon = Icon.createFromIconfont('//at.alicdn.com/t/font_1340918_lpsswvb7yv.js')
 
 function App() {
   const history = useHistory()
   const location = useLocation()
-  const [current, setCurrent] = useState<string | number | undefined>(location.pathname || '/playlist')
+  const defaultItem = location.pathname === '/' ? '/playlist': location.pathname
+  const [current, setCurrent] = useState<string | number | undefined>(defaultItem)
 
   const change = (itemKey?: string | number) => {
     history.push(`${itemKey}`)

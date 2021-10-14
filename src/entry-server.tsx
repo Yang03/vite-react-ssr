@@ -23,12 +23,12 @@ const reduxMiddlewares = [
     sagaMiddleware,
 ];
 
-async function loadData (store: Store, url: string) {
+async function loadData(store: Store, url: string) {
   const route = matchRoutes(routes, url.replace(/\?.*$/, ''))
   const promises = route.map(e => {
-      return e.route.component.loadData
-          ? e.route.component.loadData(store, e.match.params)
-          : null
+    return e.route.component.loadData
+      ? e.route.component.loadData(store, e.match.params)
+      : null
   })
 
   await Promise.all(promises)
@@ -50,9 +50,9 @@ export async function render(url: string, store: Store, context: any) {
 
 export function configureStore(initialState: any) {
   const store: any = createStore(
-      rootReducer,
-      initialState,
-      compose(applyMiddleware(...reduxMiddlewares)),
+    rootReducer,
+    initialState,
+    compose(applyMiddleware(...reduxMiddlewares)),
   );
 
   store.runSaga = sagaMiddleware.run
