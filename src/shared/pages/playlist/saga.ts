@@ -15,7 +15,7 @@ export const fetchUrl = () => fetch('http://127.0.0.1:8000/api/playlist/hot', {
   return response.json()
 })
 
-export function* fetchPlayList() {
+export function* fetchPlayList(): any {
   try {
     const playlist = yield call(fetchUrl)
     yield put({

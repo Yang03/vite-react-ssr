@@ -1,3 +1,5 @@
+
+
 import { useDispatch, useSelector } from 'react-redux'
 import { Cell } from 'zarm'
 import { Store } from 'redux'
@@ -21,7 +23,8 @@ const Recommend = () => {
   </div>)
 }
 
-Recommend.loadData = (store: Store, params?: any) => {
+Recommend.loadData = (store: Store, params?: any
+  ) => {
   store.dispatch({
     type: 'fetch_recommend'
   })

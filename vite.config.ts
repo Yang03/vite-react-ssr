@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import reactJsx from 'vite-react-jsx'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import createImportPlugin from 'vite-plugin-import';
+// import createImportPlugin from 'vite-plugin-import';
 
 import vitePluginImp from 'vite-plugin-imp';
 
@@ -22,7 +24,27 @@ export default defineConfig({
       },
     },
   },
+  // optimizeDeps:{
+  //   // esbuildOptions:{
+  //   //   plugins:[
+  //   //     esbuildCommonjs(['zarm']) 
+  //   //   ]
+  //   // }
+  //   include: ['@zarm-design/icons'],
+  // },
+  build: {
+    // rollupOptions:  {
+    //   output: {
+    //     exports:'default',
+    //   }
+    // },
+    // commonjsOptions: {
+    //   include: [/node_modules/],
+    // }
+  },
   plugins: [
+    // reactJsx(),
+    // viteCommonjs(),
     // reactRefresh(),
   
     // createImportPlugin({
@@ -50,6 +72,7 @@ export default defineConfig({
       libList: [
         {
           libName: 'zarm',
+          libDirectory: 'lib',
           style: (name) => [`zarm/lib/${name}/style/index.css`, `zarm/lib/style/index.scss`],
           // style: (name) => [`antd/lib/style/index.less`, `antd/lib/${name}/style/index.less`],
         },

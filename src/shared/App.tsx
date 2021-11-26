@@ -4,8 +4,14 @@
 import { matchRoutes, renderRoutes } from "react-router-config"
 import route from './routes'
 import { useHistory, useLocation } from 'react-router'
-import { Icon, TabBar } from 'zarm'
+import { TabBar, Popup } from 'zarm'
 import { useState } from "react";
+
+import { createFromIconfontCN } from '@ant-design/icons';
+import { Icon } from '@zarm-design/icons';
+const MyIcon = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1340918_lpsswvb7yv.js', // 在 iconfont.cn 上生成
+});
 
 const TabIcon = Icon.createFromIconfont('//at.alicdn.com/t/font_1340918_lpsswvb7yv.js')
 
@@ -23,13 +29,15 @@ function App() {
    <div>
      {renderRoutes(route)}
      <TabBar onChange={change} activeKey={current}>
-      <TabBar.Item itemKey="/playlist" title="主页" icon={<TabIcon type="home" />}/>
+      <TabBar.Item itemKey="/playlist" title="主页" icon={<MyIcon type="home" />} />
       <TabBar.Item
           itemKey="/recommend"
           title="我的"
-          icon={<TabIcon type="user" />}
-        />
+          icon={<MyIcon type="user" />} 
+          />
      </TabBar>
+     {/* <MyIcon type="icon-example" /> */}
+     {/* <TabIcon /> */}
    </div>
   )
 }

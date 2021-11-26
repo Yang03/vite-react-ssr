@@ -2,8 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import express from 'express'
 import playlist from './src/api'
-
-
+import serveStatic  from 'serve-static'
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 
@@ -14,7 +13,7 @@ async function createServer(
   const resolve = (p: string) => path.resolve(__dirname, p)
 
   const indexProd = isProd
-    ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8')
+    ? fs.readFileSync(resolve('client/index.html'), 'utf-8')
     : ''
 
   const app = express()
@@ -40,12 +39,15 @@ async function createServer(
     // use vite's connect instance as middleware
     app.use(vite.middlewares)
   } else {
-    app.use(require('compression')())
-    app.use(
-      require('serve-static')(resolve('dist/client'), {
-        index: false
-      })
-    )
+
+    app.use(serveStatic('dist/client', { index: false }))
+    // console.log('-----------------------------_>')
+    // app.use(require('compression')())
+    // app.use(
+    //   require('serve-static')(resolve('dist/client'), {
+    //     index: false
+    //   })
+    // )
   }
 
   app.use('/api/playlist/hot', playlist.hot)
@@ -53,7 +55,7 @@ async function createServer(
   
 
   app.use('*', async (req, res) => {
-
+     console.log(',,,,,,')
     try {
       const url = req.originalUrl
       let template: string;
@@ -65,7 +67,7 @@ async function createServer(
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
       } else {
         template = indexProd
-        render = require('./dist/server/entry-server.js').render
+        render = require('./server/entry-server.js').render
       }
 
       const context = {}
@@ -77,9 +79,15 @@ async function createServer(
       if (req.query.csr !== undefined) {
         return res.status(200).set({ 'Content-Type': 'text/html' }).end(template)
       }
-      const sagas = (await vite.ssrLoadModule(('/src/shared/saga'))).default
-    
-      const configureStore = (await vite.ssrLoadModule('/src/entry-server.tsx')).configureStore
+      let sagas;
+      let configureStore;
+      if (!isProd) {
+        sagas = (await vite.ssrLoadModule('/src/shared/saga')).default
+        configureStore = (await vite.ssrLoadModule('/src/entry-server.tsx')).configureStore
+      } else {
+        sagas = require(('./src/shared/saga')).default
+        configureStore = require('./src/entry-server.js').configureStore
+      }
 
       const store = configureStore()
       // const context = {}

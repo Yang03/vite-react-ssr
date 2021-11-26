@@ -15,9 +15,9 @@ export const fetchUrl = () => fetch('http://127.0.0.1:8000/api/playlist/recommen
   return response.json()
 })
 
-export function* fetchRecommend() {
+export function* fetchRecommend(): any {
   try {
-    const recommend = yield call(fetchUrl)
+    const recommend: any = yield call(fetchUrl)
     yield put({
       type: 'load_recommend',
       payload: recommend?.body?.allData
