@@ -2,9 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import reactJsx from 'vite-react-jsx'
 import reactRefresh from '@vitejs/plugin-react-refresh'
+import commonjs from '@rollup/plugin-commonjs'
+// import cjs from 'rollup-plugin-cjs';
 // import createImportPlugin from 'vite-plugin-import';
 
-import vitePluginImp from 'vite-plugin-imp';
+ import vitePluginImp from 'vite-plugin-imp';
 
 // import 'zarm/lib/style/index.css'; import 'normalize.css
 // https://vitejs.dev/config/
@@ -33,6 +35,15 @@ export default defineConfig({
   //   include: ['@zarm-design/icons'],
   // },
   build: {
+    sourcemap: true,
+    target: 'es2015',
+    minify: false,
+    // rollupOptions: {
+    //   plugins: [commonjs()],
+    // },
+    // commonjsOptions: {
+    //  include: [/node_modules/],
+    // },
     // rollupOptions:  {
     //   output: {
     //     exports:'default',
